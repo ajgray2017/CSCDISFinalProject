@@ -90,7 +90,7 @@ epochs = 50
 
 for epoch in range(epochs):
     
-    print epoch
+    print(epoch)
 
     # training discriminator
     for d_step in range(d_steps):
