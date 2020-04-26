@@ -71,7 +71,10 @@ def plot_img(array,number=None):
         plt.xlabel(number,fontsize='x-large')
     plt.show()
 
-# define parameters 
+# define parameters
+
+gen = generator(100,784)# 1024?
+dis = discriminator(784,1) #1024?
 
 d_steps = 100
 g_steps = 100
@@ -90,7 +93,7 @@ epochs = 50
 
 for epoch in range(epochs):
     
-    print(epoch)
+    print epoch
 
     # training discriminator
     for d_step in range(d_steps):
@@ -103,16 +106,14 @@ for epoch in range(epochs):
 
         inp_real_x = inp_real_x.reshape(batch_size,784)
         dis_real_out = dis(inp_real_x)
-        dis_real_loss = criteriond1(dis_real_out,
-                              Variable(torch.ones(batch_size,1)))
+        dis_real_loss = criteriond1(dis_real_out, Variable(torch.ones(batch_size,1)))
         dis_real_loss.backward()
 
         # training discriminator on data produced by generator
         inp_fake_x_gen = make_some_noise()        #output from generator is generated        
         dis_inp_fake_x = gen(inp_fake_x_gen).detach()
         dis_fake_out = dis(dis_inp_fake_x)
-        dis_fake_loss = criteriond1(dis_fake_out,
-                                Variable(torch.zeros(batch_size,1)))
+        dis_fake_loss = criteriond1(dis_fake_out, Variable(torch.zeros(batch_size,1)))
         dis_fake_loss.backward()
 
         optimizerd1.step()
@@ -124,12 +125,11 @@ for epoch in range(epochs):
         gen.zero_grad()
         
         #generating data for input for generator
-        gen_inp = make_some_noise()
+        gen_inp = create_noise()
         
         gen_out = gen(gen_inp)
         dis_out_gen_training = dis(gen_out)
-        gen_loss = criteriond2(dis_out_gen_training,
-                               Variable(torch.ones(batch_size,1)))
+        gen_loss = criteriond2(dis_out_gen_training, Variable(torch.ones(batch_size,1)))
         gen_loss.backward()
         
         optimizerd2.step()
