@@ -7,6 +7,7 @@ from torch.autograd import Variable
 from torch.utils import data as t_data
 import torchvision.datasets as datasets
 from torchvision import transforms
+from Scripts import dataCleaner as dc
 
 # random noise
 def create_noise(batch_size):
@@ -68,6 +69,10 @@ def plot_img(array,number=None):
     plt.show()
 
 def main():
+
+    #todo dynamic path
+    dataset = dc.open("~/Desktop/CIFAR-100/dataBatches/")
+
     # define parameters
     gen = generator(100,784)# 1024?
     dis = discriminator(784,1) #1024?
