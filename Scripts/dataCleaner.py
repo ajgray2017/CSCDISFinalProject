@@ -8,11 +8,12 @@ def unpickle(file):
     return dict
 
 def jsonDump(input):
+    #! broken
     import json
     with open('dataset.json', 'w') as fp:
         json.dump(input, fp)
 
-def open(filepath):
+def main(filepath):
 
     dataset = {}
     testDataset = {}
@@ -29,4 +30,4 @@ def open(filepath):
     return dataset
 
 if __name__ == "__main__":
-    open(sys.argv[1])
+    main(sys.argv[1])
