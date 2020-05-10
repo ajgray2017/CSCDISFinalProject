@@ -8,24 +8,37 @@ def unpickle(file):
     return dict
 
 def jsonDump(input):
-    #! broken
+    #! broken, bytes input needs to be string
     import json
     with open('dataset.json', 'w') as fp:
-        json.dump(input, fp)
+        json.dump(input, fp, sort_keys=True)
+
+def getData(dataset):
+    """
+    Gets data corresponing to animals
+    """
+    labels, labelNames, data = dataset.get(b"labels"), dataset.get(b"label_names"), dataset.get(b"data")
+    cdataset = {}
+    count = 0
+
+    for i in labels:
+        count += 1
+        if str(i) in "234567":
+            cdataset.update({labelNames[i].decode("utf-8") +"_"+ str(count): data[count]})
+
+    return cdataset
 
 def main(filepath):
-
+    """
+    Built for the CIFAR-10 Dataset, gets all animals out of the dataset
+    """
     dataset = {}
-    testDataset = {}
-    dataLabels = {}
-
-    print(filepath)
 
     for root, dir, files in os.walk(os.path.expanduser(filepath)):
-        print(files)
         for i in files:
-            print(i)
             dataset.update(unpickle(os.path.join(root, i)))
+    
+    dataset = getData(dataset)
 
     return dataset
 
